@@ -5,6 +5,7 @@
 ## 功能特性
 
 - 🤖 集成阿里云Qwen大模型API
+- 📝 支持Markdown渲染和代码高亮
 - 💬 实时流式对话体验
 - ⏸️ 支持手动暂停对话
 - 🎨 现代化响应式UI设计
@@ -22,8 +23,11 @@
 
 ### 前端
 - 原生HTML/CSS/JavaScript
+- Marked.js (Markdown解析) - 使用BootCDN中国镜像
+- Highlight.js (代码高亮) - 使用BootCDN中国镜像
 - Server-Sent Events (SSE)
-- Font Awesome图标
+- Font Awesome图标 - 使用BootCDN中国镜像
+- 支持JavaScript/Python/Java/CSS/HTML/JSON等多种语言的代码高亮
 - 响应式设计
 - 详细中文注释
 
@@ -43,14 +47,14 @@ spring:
   ai:
     qwen:
       api:
-        key: your-actual-qwen-api-key-here
+        key: ${QWEN_API_KEY: API_KEY}
         url: https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation
         model: qwen-turbo
 ```
 
 或者通过环境变量设置：
 ```bash
-export QWEN_API_KEY=your-actual-qwen-api-key-here
+export QWEN_API_KEY=your-actual-qwen-api-key-here # 或者直接在application.yml中配置
 ```
 
 ### 3. 运行项目
@@ -65,7 +69,7 @@ mvn spring-boot:run
 
 ### 4. 访问应用
 
-打开浏览器访问：http://localhost:8080
+打开浏览器访问：http://localhost:8999
 
 ## API接口
 
