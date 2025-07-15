@@ -1,0 +1,104 @@
+<!--
+    Spring AI Chat Demo - 主页面
+    
+    基于Spring Boot和阿里云Qwen大模型的聊天应用界面
+    支持Markdown渲染、代码高亮、流式响应等功能
+    
+    @author nyx
+    @version 1.0
+    @since 2025-01-15
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring AI Chat Demo</title>
+    
+    <!-- 主样式文件 -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Font Awesome图标库 -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Markdown渲染和代码高亮相关库 -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.9.0/styles/github.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcdn.net/ajax/libs/marked/9.1.6/marked.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <!-- 各种编程语言的语法高亮支持 -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.9.0/languages/java.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.9.0/languages/css.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.9.0/languages/html.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+</head>
+<body>
+    <!-- 主聊天容器 -->
+    <div class="chat-container">
+        <!-- 聊天头部区域 -->
+        <div class="chat-header">
+            <h1><i class="fas fa-robot"></i> Spring AI Chat Demo</h1>
+            <!-- 连接状态指示器 -->
+            <div class="status-indicator">
+                <span id="status-text">就绪</span>
+                <div id="status-dot" class="status-dot ready"></div>
+            </div>
+        </div>
+        
+        <!-- 聊天消息显示区域 -->
+        <div class="chat-messages" id="chatMessages">
+            <!-- 默认欢迎消息 -->
+            <div class="message assistant">
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-content">
+                    <div class="message-text">你好！我是基于阿里云Qwen大模型的AI助手。有什么可以帮助你的吗？</div>
+                    <div class="message-time">刚刚</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 聊天输入区域 -->
+        <div class="chat-input-container">
+            <div class="input-wrapper">
+                <!-- 消息输入框 -->
+                <textarea 
+                    id="messageInput" 
+                    placeholder="输入你的消息..." 
+                    rows="1"
+                    maxlength="2000"></textarea>
+                <!-- 操作按钮组 -->
+                <div class="input-actions">
+                    <!-- 停止按钮 -->
+                    <button id="stopBtn" class="stop-btn" disabled>
+                        <i class="fas fa-stop"></i>
+                    </button>
+                    <!-- 发送按钮 -->
+                    <button id="sendBtn" class="send-btn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- 输入框底部信息 -->
+            <div class="input-footer">
+                <span class="char-count">0/2000</span>
+                <span class="tip">按 Ctrl+Enter 发送</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 加载动画遮罩层 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <i class="fas fa-circle-notch fa-spin"></i>
+            <span>AI正在思考中...</span>
+        </div>
+    </div>
+    
+    <!-- 主要JavaScript逻辑文件 -->
+    <script src="app.js"></script>
+</body>
+</html>

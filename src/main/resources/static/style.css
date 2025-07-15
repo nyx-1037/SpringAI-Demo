@@ -1,0 +1,815 @@
+/*
+ * Spring AI Chat Demo - 样式文件
+ * 
+ * 为聊天应用提供现代化的UI样式
+ * 包含响应式设计、动画效果、Markdown渲染样式等
+ * 
+ * @author nyx
+ * @version 1.0
+ * @since 2025-01-15
+ */
+
+/* ===== 全局样式重置 ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 页面主体样式 */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ===== 主容器布局 ===== */
+/* 聊天应用主容器 */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    max-width: 1200px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== 头部区域样式 ===== */
+/* 聊天头部容器 */
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 头部标题样式 */
+.chat-header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 状态指示器容器 */
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+/* 状态指示点基础样式 */
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+/* 就绪状态 - 绿色 */
+.status-dot.ready {
+    background-color: #4ade80;
+}
+
+/* 流式传输状态 - 橙色 */
+.status-dot.streaming {
+    background-color: #f59e0b;
+}
+
+/* 错误状态 - 红色 */
+.status-dot.error {
+    background-color: #ef4444;
+}
+
+/* 状态点脉冲动画 */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* ===== 消息显示区域 ===== */
+/* 消息滚动容器 */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background: #f8fafc;
+    scroll-behavior: smooth;
+}
+
+/* 自定义滚动条样式 */
+.chat-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* ===== 消息气泡样式 ===== */
+/* 消息容器基础样式 */
+.message {
+    display: flex;
+    margin-bottom: 20px;
+    animation: fadeInUp 0.3s ease-out;
+}
+
+/* 用户消息右对齐 */
+.message.user {
+    flex-direction: row-reverse;
+}
+
+/* 消息头像样式 */
+.message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin: 0 12px;
+    flex-shrink: 0;
+}
+
+/* 用户头像样式 - 蓝紫渐变 */
+.message.user .message-avatar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+/* AI助手头像样式 - 绿色渐变 */
+.message.assistant .message-avatar {
+    background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+    color: white;
+}
+
+/* 消息内容容器 */
+.message-content {
+    max-width: 70%;
+    min-width: 100px;
+}
+
+/* 消息文本气泡基础样式 */
+.message-text {
+    padding: 12px 16px;
+    border-radius: 18px;
+    line-height: 1.5;
+    word-wrap: break-word;
+    position: relative;
+}
+
+/* 用户消息气泡样式 */
+.message.user .message-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-bottom-right-radius: 4px;
+}
+
+/* AI助手消息气泡样式 */
+.message.assistant .message-text {
+    background: white;
+    color: #1f2937;
+    border: 1px solid #e5e7eb;
+    border-bottom-left-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 消息时间戳样式 */
+.message-time {
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 4px;
+    text-align: right;
+}
+
+/* AI助手消息时间戳左对齐 */
+.message.assistant .message-time {
+    text-align: left;
+}
+
+/* ===== 输入区域样式 ===== */
+/* 输入区域容器 */
+.chat-input-container {
+    padding: 20px;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* 输入框包装器 */
+.input-wrapper {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    background: #f8fafc;
+    border: 2px solid #e5e7eb;
+    border-radius: 24px;
+    padding: 8px 16px;
+    transition: all 0.2s ease;
+}
+
+/* 输入框聚焦状态 */
+.input-wrapper:focus-within {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* 消息输入框样式 */
+#messageInput {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    resize: none;
+    font-size: 16px;
+    line-height: 1.5;
+    max-height: 120px;
+    min-height: 24px;
+    font-family: inherit;
+}
+
+/* 输入操作按钮容器 */
+.input-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* 发送和停止按钮基础样式 */
+.send-btn, .stop-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+/* 发送按钮样式 */
+.send-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+/* 发送按钮悬停效果 */
+.send-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* 发送按钮禁用状态 */
+.send-btn:disabled {
+    background: #d1d5db;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 停止按钮样式 */
+.stop-btn {
+    background: #ef4444;
+    color: white;
+}
+
+/* 停止按钮悬停效果 */
+.stop-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* 停止按钮禁用状态 */
+.stop-btn:disabled {
+    background: #d1d5db;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 输入框底部信息栏 */
+.input-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+/* 字符计数样式 */
+.char-count {
+    font-weight: 500;
+}
+
+/* 提示文本样式 */
+.tip {
+    font-style: italic;
+}
+
+/* ===== 加载动画样式 ===== */
+/* 加载遮罩层 */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* 加载动画容器 */
+.loading-spinner {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* 加载图标样式 */
+.loading-spinner i {
+    font-size: 32px;
+    color: #667eea;
+    margin-bottom: 16px;
+    display: block;
+}
+
+/* 加载文本样式 */
+.loading-spinner span {
+    font-size: 16px;
+    color: #4b5563;
+    font-weight: 500;
+}
+
+/* ===== 动画关键帧定义 ===== */
+/* 消息淡入上升动画 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 打字指示器闪烁动画 */
+@keyframes typing {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* 打字指示器样式 */
+.typing-indicator {
+    display: inline-block;
+    animation: typing 1.5s infinite;
+}
+
+/* ===== 响应式设计 ===== */
+/* 移动端适配 (768px以下) */
+@media (max-width: 768px) {
+    .chat-container {
+        height: 100vh;
+        border-radius: 0;
+    }
+    
+    .chat-header {
+        padding: 15px 20px;
+    }
+    
+    .chat-header h1 {
+        font-size: 20px;
+    }
+    
+    .chat-messages {
+        padding: 15px;
+    }
+    
+    .message-content {
+        max-width: 85%;
+    }
+    
+    .chat-input-container {
+        padding: 15px;
+    }
+    
+    .input-wrapper {
+        padding: 6px 12px;
+    }
+    
+    .send-btn, .stop-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+}
+
+/* ===== 其他样式优化 ===== */
+/* 消息文本滚动条美化 */
+.message-text {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+/* 文本选中样式 */
+::selection {
+    background: rgba(102, 126, 234, 0.2);
+}
+
+/* 按钮焦点样式 */
+.send-btn:focus, .stop-btn:focus {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
+/* ===== 状态指示器样式 ===== */
+/* 打字光标样式 */
+.typing-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.2em;
+    background-color: #3b82f6;
+    margin-left: 2px;
+    animation: blink 1s infinite;
+}
+
+/* 光标闪烁动画 */
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* 完成指示器样式 */
+.completion-indicator {
+    color: #10b981;
+    font-size: 0.9em;
+    animation: fadeInScale 0.3s ease-out;
+}
+
+.completion-indicator i {
+    margin-left: 4px;
+}
+
+/* 淡入缩放动画 */
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 暂停指示器样式 */
+.pause-indicator {
+    color: #f59e0b;
+    font-style: italic;
+    animation: fadeInScale 0.3s ease-out;
+}
+
+.pause-indicator i {
+    margin-right: 4px;
+    animation: pulse 2s infinite;
+}
+
+/* ===== 通知系统样式 ===== */
+/* 通知容器基础样式 */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    border-radius: 8px;
+    padding: 12px 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-left: 4px solid #3b82f6;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 1000;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: all 0.3s ease-out;
+    max-width: 300px;
+    font-size: 14px;
+}
+
+/* 通知显示状态 */
+.notification.show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+/* 信息类型通知 */
+.notification.info {
+    border-left-color: #3b82f6;
+}
+
+.notification.info i {
+    color: #3b82f6;
+}
+
+/* 成功类型通知 */
+.notification.success {
+    border-left-color: #10b981;
+}
+
+.notification.success i {
+    color: #10b981;
+}
+
+/* 错误类型通知 */
+.notification.error {
+    border-left-color: #ef4444;
+}
+
+.notification.error i {
+    color: #ef4444;
+}
+
+/* 通知文本样式 */
+.notification span {
+    flex: 1;
+    color: #374151;
+}
+
+/* ===== Markdown 渲染样式 ===== */
+/* 标题样式通用设置 */
+.message-text h1,
+.message-text h2,
+.message-text h3,
+.message-text h4,
+.message-text h5,
+.message-text h6 {
+    margin: 16px 0 8px 0;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+/* 一级标题样式 */
+.message-text h1 {
+    font-size: 1.5em;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 8px;
+}
+
+/* 二级标题样式 */
+.message-text h2 {
+    font-size: 1.3em;
+    border-bottom: 1px solid #f3f4f6;
+    padding-bottom: 6px;
+}
+
+/* 三级标题样式 */
+.message-text h3 {
+    font-size: 1.2em;
+}
+
+/* 四级标题样式 */
+.message-text h4 {
+    font-size: 1.1em;
+}
+
+/* 五级和六级标题样式 */
+.message-text h5,
+.message-text h6 {
+    font-size: 1em;
+}
+
+/* 段落样式 */
+.message-text p {
+    margin: 8px 0;
+    line-height: 1.6;
+}
+
+/* 列表样式 */
+.message-text ul,
+.message-text ol {
+    margin: 8px 0;
+    padding-left: 24px;
+}
+
+/* 列表项样式 */
+.message-text li {
+    margin: 4px 0;
+    line-height: 1.5;
+}
+
+/* 引用块样式 */
+.message-text blockquote {
+    margin: 12px 0;
+    padding: 8px 16px;
+    border-left: 4px solid #e5e7eb;
+    background: #f9fafb;
+    border-radius: 0 4px 4px 0;
+    font-style: italic;
+}
+
+/* 行内代码样式 */
+.message-text code {
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.9em;
+    color: #e11d48;
+}
+
+/* 代码块容器样式 */
+.message-text pre {
+    margin: 12px 0;
+    padding: 16px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow-x: auto;
+    position: relative;
+}
+
+/* 代码块内代码样式 */
+.message-text pre code {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    color: inherit;
+    font-size: 0.9em;
+    line-height: 1.5;
+}
+
+/* 表格容器样式 */
+.message-text table {
+    width: 100%;
+    margin: 12px 0;
+    border-collapse: collapse;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* 表格单元格样式 */
+.message-text th,
+.message-text td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* 表格头部样式 */
+.message-text th {
+    background: #f9fafb;
+    font-weight: 600;
+}
+
+/* 最后一行单元格样式 */
+.message-text tr:last-child td {
+    border-bottom: none;
+}
+
+/* 链接样式 */
+.message-text a {
+    color: #3b82f6;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+}
+
+/* 链接悬停效果 */
+.message-text a:hover {
+    border-bottom-color: #3b82f6;
+}
+
+/* 粗体文本样式 */
+.message-text strong {
+    font-weight: 600;
+}
+
+/* 斜体文本样式 */
+.message-text em {
+    font-style: italic;
+}
+
+/* 分隔线样式 */
+.message-text hr {
+    margin: 16px 0;
+    border: none;
+    height: 1px;
+    background: #e5e7eb;
+}
+
+/* ===== 代码块增强功能 ===== */
+/* 代码块包装器 */
+.code-block-wrapper {
+    position: relative;
+}
+
+/* 复制代码按钮 */
+.copy-code-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: #374151;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* 代码块悬停时显示复制按钮 */
+.code-block-wrapper:hover .copy-code-btn {
+    opacity: 1;
+}
+
+/* 复制按钮悬停效果 */
+.copy-code-btn:hover {
+    background: #4b5563;
+}
+
+/* ===== 数学公式样式 ===== */
+/* KaTeX 数学公式基础样式 */
+.message-text .katex {
+    font-size: 1.1em;
+}
+
+/* 数学公式块级显示 */
+.message-text .katex-display {
+    margin: 16px 0;
+    text-align: center;
+}
+
+/* ===== 任务列表样式 ===== */
+/* 任务列表复选框 */
+.message-text input[type="checkbox"] {
+    margin-right: 8px;
+    transform: scale(1.1);
+}
+
+/* 任务列表项样式 */
+.message-text li.task-list-item {
+    list-style: none;
+    margin-left: -20px;
+}
+
+/* ===== 代码语言标签 ===== */
+/* 代码块语言标识 */
+.code-language {
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    background: #6b7280;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 11px;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+/* 响应式代码块 */
+@media (max-width: 768px) {
+    .message-text pre {
+        padding: 12px;
+        font-size: 14px;
+    }
+    
+    .message-text table {
+        font-size: 14px;
+    }
+    
+    .message-text th,
+    .message-text td {
+        padding: 6px 8px;
+    }
+}

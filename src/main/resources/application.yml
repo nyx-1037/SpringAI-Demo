@@ -1,0 +1,21 @@
+server:
+  port: 8999
+
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.ai.autoconfigure.openai.OpenAiAutoConfiguration
+  ai:
+    qwen:
+      api:
+        key: ${QWEN_API_KEY: API_KEY}
+        url: https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation
+        model: qwen-turbo
+        max-tokens: 2000
+        temperature: 0.7
+        stream: true
+
+logging:
+  level:
+    com.nyx.springAIDemo20250715: DEBUG
+    org.springframework.ai: DEBUG
